@@ -1,0 +1,77 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "make",
+      "type": "shell",
+      "command": "pros",
+      "args": [
+        "make"
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "options": {
+        "statusbar": {
+          "label": "$(combine) make"
+        }
+      }
+    },
+    {
+      "label": "make upload",
+      "type": "shell",
+      "command": "pros",
+      "args": [
+        "mu",
+        // Use the following if you want to be prompted to select v5 slot
+        // "--slot", "${input:slot}"
+        "--slot", "1" // Default upload slot
+      ],
+      "problemMatcher": [],
+      "options": {
+        "statusbar": {
+          "label": "$(run-above) make-upload"
+        }
+      }
+    },
+    {
+      "label": "make upload terminal",
+      "type": "shell",
+      "command": "pros",
+      "args": [
+        "mut",
+        // Use the following if you want to be prompted to select v5 slot
+        // "--slot", "${input:slot}"
+        "--slot", "1" // Default upload slot
+      ],
+      "problemMatcher": [],
+      "options": {
+        "statusbar": {
+          "label": "$(debug-alt) make-upload-terminal"
+        }
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "type": "pickString",
+      "id": "slot",
+      "description": "Which slot to upload to?",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "default": "1"
+    }
+  ]
+}

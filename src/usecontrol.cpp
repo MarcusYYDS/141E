@@ -1,46 +1,41 @@
 #include "headers.h"
 void usecontrol()
 {
-  while (1)                           
-  {
-    int leftspeed = controller1.Axis3.position() * 0.5 + controller1.Axis4.position() * 0.5;
-    int rightspeed = controller1.Axis3.position() * 0.5 - controller1.Axis4.position() * 0.5;
-    mtr_Lgroup.spin(directionType::fwd, leftspeed, percentUnits::pct);
-    mtr_Rgroup.spin(directionType::fwd, rightspeed, percentUnits::pct);
+  thread t3(punch_hardle_routine);
+  while (1){
+    mtr_Lgroup.setStopping(brakeType::brake);
+    mtr_Rgroup.setStopping(brakeType::brake);
+    double leftspeed = controller1.Axis3.position()  + controller1.Axis4.position() ;
+    double rightspeed = controller1.Axis3.position()  - controller1.Axis4.position() ;
+    if(leftspeed || rightspeed){
+      mtr_Lgroup.spin(directionType::fwd, leftspeed*12.8/100.0, voltageUnits::volt);
+      mtr_Rgroup.spin(directionType::fwd, rightspeed*12.8/100.0, voltageUnits::volt);
+    }
+    else{
+      mtr_Lgroup.stop();
+      mtr_Rgroup.stop();
+    }
     wait(10, msec);
-    if (controller1.ButtonA.pressing())
-    {
-      autonomou();
-    if (controller1.ButtonB.pressing())
-    {
-      mtr_Lgroup.spin(directionType::fwd,100, velocityUnits::pct);
+    if(controller1.ButtonR1.pressing()){
+      mtr_intake.spin(directionType::fwd, 12.8, voltageUnits::volt);
     }
-    if (controller1.ButtonR1.pressing())
-    {
-      mtr_XP.spin(directionType::fwd,100,velocityUnits::pct);
+    else if (controller1.ButtonB.pressing()){
+      mtr_intake.spin(directionType::rev, 12.8, voltageUnits::volt);
     }
-    else {
-      mtr_XP.stop();
+    else{
+      mtr_intake.stop();
     }
-    if (controller1.ButtonR2.pressing())
-    {
-      mtr_XP.stop();
+    if(controller1.ButtonDown.pressing()){
+      punch_reset();
     }
-    if(controller1.ButtonX.pressing()){
-      //
+    if(controller1.ButtonLeft.pressing()){
+      mtr_intake.stop();
+      mtr_Lgroup.stop();
+      mtr_Rgroup.stop();
+      mtr_punch.stop();
+      mtr_Sgroup.stop();
+
     }
-    if (controller1.ButtonL1.pressing())
-    {
-      mtr_ZPgroup.spin(directionType::fwd,500, velocityUnits::pct);
-    }                                                                                                                                       
-    if (controller1.ButtonL2.pressing())
-    {
-      mtr_SP.spin(directionType::fwd,100,velocityUnits::pct);
-    }
-    if(controller1.ButtonUp.pressing()){
-      mtr_ZPgroup.stop();
-      mtr_SP.stop();
-    }
+    shoot_handle();
   }
-}
 }

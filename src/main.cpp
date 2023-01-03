@@ -15,10 +15,12 @@
 
 competition Competition;
 int main() {
-  thread t1(display);
+  thread t1(LVGLShow);
   wait(300, msec);
   Competition.autonomous(autonomou);
   Competition.drivercontrol(usecontrol);
+  usecontrol();//调用手动函数
+  thread t3(punch_hardle_routine);
   while(1){
     wait(5, msec);
   }
@@ -33,8 +35,6 @@ int main() {
   //       // Allow other tasks to run
   //       this_thread::sleep_for(10);
   //   }
-  usecontrol();//调用手动函数
-  thread t3(punch_hardle_routine);
   // // Initializing Robot Configuration. DO NOT REMOVE!
   // Competition.drivercontrol(usecontrol);//主函数手动
   // // Competition.drivercontrol(usecontrol);

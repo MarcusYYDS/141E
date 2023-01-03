@@ -25,6 +25,8 @@ void punch_reset();
 void shoot_handle();
 void loading();
 void display();
+void LVGLShow();
+void PicShow();
 void scrollingText_1();
 void scrollingText_2();
 void punch_hardle_routine();
